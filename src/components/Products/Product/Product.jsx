@@ -1,16 +1,32 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import React,{useState} from "react";
+// import { useDispatch, useSelector } from "react-redux";
 
-import {
-  addItemToCart,
-  removeItemFromCart,
-  updateCartItem,
-} from "../../../store/cart/cart.actions";
-
+// import {
+//   addItemToCart,
+//   removeItemFromCart,
+//   updateCartItem,
+// } from "../../../store/cart/cart.actions";
 const Product = () => {
+  const [product, setProduct] = useState([]);
+  React.useEffect(() => {
+    showData()
+  }, [])
+  const showData = () => {
+    axios.get(`http://localhost:8080/products`).then((res) => {
+      setProduct(res.data);
+      console.log(res.data);
+    })
+  }
+
+
   const id = null;
   return (
-    <div data-cy={`product-${id}`}>
+    <div>
+      <div>
+        {product.map((product) => (<Product key={product.id} {...product} />))}
+      </div>
+    <div  data-cy={`product-${id}`}>
       <h3 data-cy="product-name">name</h3>
       <h6 data-cy="product-description">description</h6>
       <button data-cy="product-add-item-to-cart-button"></button>
@@ -21,7 +37,10 @@ const Product = () => {
         <button data-cy="product-remove-cart-item-button"></button>
       </div>
     </div>
+    
+    </div>
   );
 };
+
 
 export default Product;
